@@ -7,17 +7,29 @@ import phonenumbers
 def create_owner_pure_phone(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     for flat in Flat.objects.all():
+
         phone = phonenumbers.parse(flat.owners_phonenumber, "RU")
-        flat.owner_pure_phone = f'{phone.country_code}{phone.national_number}'
-        flat.save()
+        valid_number = phonenumbers.is_valid_number(phone)
+        if valid_number:
+            flat.owner_pure_phone = f'{phone.country_code}{phone.national_number}'
+            flat.save()
+        else:
+            flat.owner_pure_phone = None
+            flat.save()
 
 
-def backwards(apps, schema_editor):
+def move_backward(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     for flat in Flat.objects.all():
+
         phone = phonenumbers.parse(flat.owners_phonenumber, "RU")
-        flat.owner_pure_phone = f'{phone.country_code}{phone.national_number}'
-        flat.save()
+        valid_number = phonenumbers.is_valid_number(phone)
+        if valid_number:
+            flat.owner_pure_phone = f'{phone.country_code}{phone.national_number}'
+            flat.save()
+        else:
+            flat.owner_pure_phone = None
+            flat.save()
 
 
 class Migration(migrations.Migration):
@@ -27,5 +39,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_owner_pure_phone, backwards)
+        migrations.RunPython(create_owner_pure_phone, move_backward)
     ]
