@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
-from .models import Flat, Claim
+from .models import Flat, Claim, Owner
 
 
 class FlatAdmin(admin.ModelAdmin):
@@ -19,7 +19,12 @@ class ClaimAdmin(admin.ModelAdmin):
     list_filter = ['who_complained']
 
 
+class OwnerAdmin(admin.ModelAdmin):
+    raw_id_fields = ("flat",)
+
+
 admin.site.register(Flat, FlatAdmin)
 admin.site.register(Claim, ClaimAdmin)
+admin.site.register(Owner, OwnerAdmin)
 
 
