@@ -5,6 +5,7 @@ from .models import Flat, Claim
 
 
 class FlatAdmin(admin.ModelAdmin):
+    raw_id_fields = ("liked_by",)
     search_fields = ('owner', 'town', 'address', )
     readonly_fields = ["created_at"]
     list_display = ('address', 'price', 'new_building', 'construction_year', 'town')
@@ -13,7 +14,7 @@ class FlatAdmin(admin.ModelAdmin):
 
 
 class ClaimAdmin(admin.ModelAdmin):
-    raw_id_fields = ("flat",)
+    raw_id_fields = ("flat", 'who_complained')
     list_display = ['who_complained', 'flat']
     list_filter = ['who_complained']
 
